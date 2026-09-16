@@ -10,7 +10,7 @@ shopping cart, and a Gemini-backed AI shopping assistant.
 <h3>🏠 Home Page</h3>
 
 <p align="center">
-  <img src="./images/home.png"
+  <img src="./image/home.png"
        alt="Home Page"
        width="900">
 </p>
@@ -18,7 +18,7 @@ shopping cart, and a Gemini-backed AI shopping assistant.
 <h3>🛍️ Product Page</h3>
 
 <p align="center">
-  <img src="./images/cart.png"
+  <img src="./image/cart.png"
        alt="Product Page"
        width="900">
 </p>
@@ -26,7 +26,7 @@ shopping cart, and a Gemini-backed AI shopping assistant.
 <h3>🛒 Cart Page</h3>
 
 <p align="center">
-  <img src="./images/footer.png"
+  <img src="./image/footer.png"
        alt="Cart Page"
        width="900">
 </p>
