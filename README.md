@@ -5,6 +5,31 @@ across 10 categories, a full-featured header, 3D CSS animations, a session-based
 shopping cart, and a Gemini-backed AI shopping assistant.
 
 ---
+<h2>📸 Project Screenshots</h2>
+
+<h3>🏠 Home Page</h3>
+
+<p align="center">
+  <img src="./images/home.png"
+       alt="Home Page"
+       width="900">
+</p>
+
+<h3>🛍️ Product Page</h3>
+
+<p align="center">
+  <img src="./images/cart.png"
+       alt="Product Page"
+       width="900">
+</p>
+
+<h3>🛒 Cart Page</h3>
+
+<p align="center">
+  <img src="./images/footer.png"
+       alt="Cart Page"
+       width="900">
+</p>
 
 ## Quick Start
 
