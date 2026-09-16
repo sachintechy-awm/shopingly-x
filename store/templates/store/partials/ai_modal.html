@@ -1,0 +1,30 @@
+{% csrf_token %}
+<div class="ai-modal-overlay">
+  <div class="ai-modal">
+    <div class="ai-modal-header">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="#7c3aed" width="20" height="20"><path d="M12 2l1.9 5.8L20 10l-6.1 2.2L12 18l-1.9-5.8L4 10l6.1-2.2L12 2z"/></svg>
+        AI Shopping Assistant
+      </h3>
+      <button class="ai-modal-close" aria-label="Close">&times;</button>
+    </div>
+
+    <p style="font-size:0.85rem;color:#64748b;margin:0 0 14px;">
+      Describe what you need in your own words — for example
+      <em>"something to keep my coffee hot on my commute"</em> — and I'll point you to the right products.
+    </p>
+
+    <form data-url="{% url 'store:ai_search' %}">
+      <input type="text" placeholder="What are you looking for?" autocomplete="off">
+      <button type="submit" class="btn btn-primary">Ask</button>
+    </form>
+
+    <div class="ai-loading">
+      <div class="spinner"></div>
+      Thinking about the best matches...
+    </div>
+
+    <div class="ai-response"></div>
+    <div class="ai-results-grid"></div>
+  </div>
+</div>

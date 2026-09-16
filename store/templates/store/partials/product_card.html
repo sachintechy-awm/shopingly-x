@@ -1,0 +1,47 @@
+{% load static %}
+<div class="product-card">
+  <div class="product-media">
+    {% if product.discount_price %}
+      <span class="product-badge">-{{ product.discount_percent }}%</span>
+    {% elif product.is_featured %}
+      <span class="product-badge featured">Featured</span>
+    {% endif %}
+    <button class="wishlist-btn" aria-label="Add to wishlist" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" width="16" height="16"><path d="M20.8 4.6c-1.9-1.6-4.7-1.4-6.4.4L12 7.4 9.6 5c-1.7-1.8-4.5-2-6.4-.4-2.1 1.8-2.2 5-.3 7l8.6 8.6a.9.9 0 0 0 1.2 0l8.6-8.6c1.9-2 1.8-5.2-.3-7z"/></svg>
+    </button>
+    <a href="{{ product.get_absolute_url }}">
+      <img src="{% static product.image %}" alt="{{ product.name }}" loading="lazy">
+    </a>
+  </div>
+
+  <div class="product-info">
+    <div class="product-cat">{{ product.category.name }}</div>
+    <a href="{{ product.get_absolute_url }}">
+      <h3 class="product-name">{{ product.name }}</h3>
+    </a>
+
+    <div class="product-rating">
+      {% for i in product.rating_range %}
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 7 1-5 4.9 1.2 6.9L12 17.8 5.7 21.1 6.9 14.2l-5-4.9 7-1L12 2z"/></svg>
+      {% endfor %}
+      {% for i in product.empty_rating_range %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.1 6.3 7 1-5 4.9 1.2 6.9L12 17.8 5.7 21.1 6.9 14.2l-5-4.9 7-1L12 2z"/></svg>
+      {% endfor %}
+      <span>{{ product.rating }}</span>
+    </div>
+
+    <div class="price-row">
+      <span class="price-current">₹{{ product.current_price|floatformat:0 }}</span>
+      {% if product.discount_price %}
+        <span class="price-original">₹{{ product.price|floatformat:0 }}</span>
+        <span class="price-discount">{{ product.discount_percent }}% off</span>
+      {% endif %}
+    </div>
+
+    <form action="{% url 'store:cart_add' product.id %}" method="post" class="add-to-cart-form" data-ajax="true">
+      {% csrf_token %}
+      <input type="hidden" name="quantity" value="1">
+      <button type="submit" class="btn btn-primary btn-sm btn-block">Add to Cart</button>
+    </form>
+  </div>
+</div>

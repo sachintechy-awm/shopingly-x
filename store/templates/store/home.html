@@ -1,0 +1,151 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}ShopinglyX — AI-Powered Shopping{% endblock %}
+
+{% block content %}
+
+<!-- ============ HERO with 3D animation ============ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-copy">
+      <span class="eyebrow">✨ Now with AI shopping assistant</span>
+      <h1>Shop smarter with <span>ShopinglyX</span></h1>
+      <p>
+        100+ products across electronics, fashion, home, beauty and more —
+        with an AI assistant that understands what you actually need, even
+        when you don't know the product name.
+      </p>
+      <div class="hero-actions">
+        <a href="{% url 'store:product_list' %}" class="btn btn-primary">Shop All Products</a>
+        <button class="btn btn-outline" data-ai-open type="button">Try the AI Assistant</button>
+      </div>
+    </div>
+
+    <div class="hero-3d-scene">
+      <div class="floating-cube c1">
+        <div class="cube-face front"></div><div class="cube-face back"></div>
+        <div class="cube-face right"></div><div class="cube-face left"></div>
+        <div class="cube-face top"></div><div class="cube-face bottom"></div>
+      </div>
+      <div class="floating-cube c2">
+        <div class="cube-face front"></div><div class="cube-face back"></div>
+        <div class="cube-face right"></div><div class="cube-face left"></div>
+        <div class="cube-face top"></div><div class="cube-face bottom"></div>
+      </div>
+      <div class="floating-cube c3">
+        <div class="cube-face front"></div><div class="cube-face back"></div>
+        <div class="cube-face right"></div><div class="cube-face left"></div>
+        <div class="cube-face top"></div><div class="cube-face bottom"></div>
+      </div>
+      <div class="floating-cube c4">
+        <div class="cube-face front"></div><div class="cube-face back"></div>
+        <div class="cube-face right"></div><div class="cube-face left"></div>
+        <div class="cube-face top"></div><div class="cube-face bottom"></div>
+      </div>
+
+      <div class="hero-badge-float">
+        <svg viewBox="0 0 24 24" fill="#16a34a" width="20" height="20"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+        Free delivery over ₹999
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURE STRIP ============ -->
+<section class="feature-strip">
+  <div class="container">
+    <div class="feature-item">
+      <div class="icon-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <div><h4>Free Shipping</h4><p>On all orders over ₹999</p></div>
+    </div>
+    <div class="feature-item">
+      <div class="icon-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.5 9A9 9 0 0 0 5.6 5.6L1 10m22 4l-4.6 4.4A9 9 0 0 1 3.5 15"/></svg>
+      </div>
+      <div><h4>Easy Returns</h4><p>30-day return window</p></div>
+    </div>
+    <div class="feature-item">
+      <div class="icon-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div><h4>Secure Payments</h4><p>Encrypted checkout</p></div>
+    </div>
+    <div class="feature-item">
+      <div class="icon-circle">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M12 2l1.9 5.8L20 10l-6.1 2.2L12 18l-1.9-5.8L4 10l6.1-2.2L12 2z"/></svg>
+      </div>
+      <div><h4>AI Assistant</h4><p>Find products by description</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATEGORIES ============ -->
+<div class="container">
+  <div class="section-title">
+    <h2>Shop by Category</h2>
+    <a href="{% url 'store:product_list' %}">View all products →</a>
+  </div>
+  <div class="category-grid">
+    {% for cat in categories %}
+      <a href="{{ cat.get_absolute_url }}" class="category-card">
+        <img src="{% static cat.image %}" alt="{{ cat.name }}" class="cat-img" loading="lazy">
+        <div class="cat-name">{{ cat.name }}</div>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ============ FEATURED ============ -->
+<div class="container">
+  <div class="section-title">
+    <h2>Featured Products</h2>
+    <a href="{% url 'store:product_list' %}?sort=rating">See more →</a>
+  </div>
+  <div class="product-grid">
+    {% for product in featured_products %}
+      {% include 'store/partials/product_card.html' %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ============ PROMO BANNER ============ -->
+<div class="container">
+  <div class="promo-banner">
+    <div>
+      <h2>Not sure what you need?</h2>
+      <p>Describe the problem in plain English and our AI assistant will match you with the right products from our catalog.</p>
+    </div>
+    <button class="btn btn-primary" data-ai-open type="button">Ask the AI Assistant</button>
+  </div>
+</div>
+
+<!-- ============ TOP RATED ============ -->
+<div class="container">
+  <div class="section-title">
+    <h2>Top Rated</h2>
+    <a href="{% url 'store:product_list' %}?sort=rating">See more →</a>
+  </div>
+  <div class="product-grid">
+    {% for product in top_rated %}
+      {% include 'store/partials/product_card.html' %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ============ NEW ARRIVALS ============ -->
+<div class="container" style="padding-bottom:40px;">
+  <div class="section-title">
+    <h2>New Arrivals</h2>
+    <a href="{% url 'store:product_list' %}?sort=newest">See more →</a>
+  </div>
+  <div class="product-grid">
+    {% for product in new_arrivals %}
+      {% include 'store/partials/product_card.html' %}
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

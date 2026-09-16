@@ -1,0 +1,30 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Login — ShopinglyX{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="auth-card">
+    <h2>Welcome back</h2>
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
+            <div style="color:#dc2626;font-size:0.8rem;margin-top:4px;">{{ field.errors|striptags }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+      {% if form.non_field_errors %}
+        <div style="color:#dc2626;font-size:0.85rem;margin-bottom:12px;">{{ form.non_field_errors|striptags }}</div>
+      {% endif %}
+      <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+    <div class="auth-switch">
+      Don't have an account? <a href="{% url 'store:signup' %}">Sign up</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

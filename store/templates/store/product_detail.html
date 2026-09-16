@@ -1,0 +1,80 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} — ShopinglyX{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a href="{% url 'store:home' %}">Home</a> /
+      <a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a> /
+      {{ product.name|truncatechars:40 }}
+    </div>
+  </div>
+
+  <div class="product-detail-grid">
+    <div class="product-detail-image">
+      <img src="{% static product.image %}" alt="{{ product.name }}">
+    </div>
+
+    <div>
+      <div class="product-cat">{{ product.category.name }}</div>
+      <h1 class="detail-title">{{ product.name }}</h1>
+
+      <div class="product-rating">
+        {% for i in product.rating_range %}
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 7 1-5 4.9 1.2 6.9L12 17.8 5.7 21.1 6.9 14.2l-5-4.9 7-1L12 2z"/></svg>
+        {% endfor %}
+        {% for i in product.empty_rating_range %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.1 6.3 7 1-5 4.9 1.2 6.9L12 17.8 5.7 21.1 6.9 14.2l-5-4.9 7-1L12 2z"/></svg>
+        {% endfor %}
+        <span>{{ product.rating }} rating</span>
+      </div>
+
+      <div class="detail-price-row">
+        <span class="price-current">₹{{ product.current_price|floatformat:0 }}</span>
+        {% if product.discount_price %}
+          <span class="price-original">₹{{ product.price|floatformat:0 }}</span>
+          <span class="price-discount">{{ product.discount_percent }}% off</span>
+        {% endif %}
+      </div>
+
+      <p class="detail-description">{{ product.description }}</p>
+
+      <form action="{% url 'store:cart_add' product.id %}" method="post">
+        {% csrf_token %}
+        <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:8px;">Quantity</label>
+        <div class="qty-selector">
+          <button type="button" class="qty-decrease">−</button>
+          <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}">
+          <button type="button" class="qty-increase">+</button>
+        </div>
+
+        <div class="detail-actions">
+          <button type="submit" class="btn btn-primary">Add to Cart</button>
+          <a href="{% url 'store:cart_detail' %}" class="btn btn-outline">View Cart</a>
+        </div>
+      </form>
+
+      {% if product.stock > 0 %}
+        <p class="stock-note">✓ In stock — {{ product.stock }} available</p>
+      {% else %}
+        <p class="stock-note" style="color:#dc2626;">Out of stock</p>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if related_products %}
+    <div class="section-title">
+      <h2>You may also like</h2>
+      <a href="{{ product.category.get_absolute_url }}">More in {{ product.category.name }} →</a>
+    </div>
+    <div class="product-grid" style="margin-bottom:60px;">
+      {% for product in related_products %}
+        {% include 'store/partials/product_card.html' %}
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

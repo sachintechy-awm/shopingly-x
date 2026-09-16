@@ -1,0 +1,96 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}
+  {% if category %}{{ category.name }}{% elif query %}Search: {{ query }}{% else %}All Products{% endif %} — ShopinglyX
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a href="{% url 'store:home' %}">Home</a> /
+      <a href="{% url 'store:product_list' %}">Products</a>
+      {% if category %} / {{ category.name }}{% endif %}
+    </div>
+    <h1>
+      {% if category %}{{ category.name }}
+      {% elif query %}Results for "{{ query }}"
+      {% else %}All Products{% endif %}
+    </h1>
+  </div>
+
+  <div class="list-layout">
+
+    <aside class="filter-sidebar">
+      <h4>Categories</h4>
+      <ul>
+        <li>
+          <a href="{% url 'store:product_list' %}" class="{% if not category %}active{% endif %}">All Products</a>
+        </li>
+        {% for cat in categories %}
+          <li>
+            <a href="{{ cat.get_absolute_url }}" class="{% if category and category.id == cat.id %}active{% endif %}">
+              {{ cat.name }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <h4 style="margin-top:22px;">Need help choosing?</h4>
+      <button class="btn btn-outline btn-sm btn-block" data-ai-open type="button">Ask AI Assistant</button>
+    </aside>
+
+    <div class="list-main">
+      <div class="list-toolbar">
+        <span style="font-size:0.9rem;color:#64748b;">{{ total_results }} product{{ total_results|pluralize }} found</span>
+        <form method="get" id="sort-form">
+          {% if query %}<input type="hidden" name="q" value="{{ query }}">{% endif %}
+          <select name="sort" onchange="document.getElementById('sort-form').submit()">
+            <option value="">Sort by: Default</option>
+            <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+            <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+            <option value="rating" {% if sort == 'rating' %}selected{% endif %}>Highest Rated</option>
+            <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest First</option>
+          </select>
+        </form>
+      </div>
+
+      {% if page_obj %}
+        <div class="product-grid">
+          {% for product in page_obj %}
+            {% include 'store/partials/product_card.html' %}
+          {% endfor %}
+        </div>
+
+        {% if page_obj.paginator.num_pages > 1 %}
+          <div class="pagination">
+            {% if page_obj.has_previous %}
+              <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">← Prev</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+              {% if num == page_obj.number %}
+                <span class="current">{{ num }}</span>
+              {% elif num > page_obj.number|add:-3 and num < page_obj.number|add:3 %}
+                <a href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">{{ num }}</a>
+              {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">Next →</a>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="empty-state">
+          <h3>No products found</h3>
+          <p>Try a different search term or browse another category.</p>
+          <a href="{% url 'store:product_list' %}" class="btn btn-primary">Browse All Products</a>
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}

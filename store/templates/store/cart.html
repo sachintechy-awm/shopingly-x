@@ -1,0 +1,71 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Your Cart — ShopinglyX{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'store:home' %}">Home</a> / Cart</div>
+    <h1>Your Shopping Cart</h1>
+  </div>
+
+  {% if cart|length %}
+    <div class="cart-layout">
+      <div>
+        {% for item in cart %}
+          <div class="cart-item">
+            <img src="{% static item.product.image %}" alt="{{ item.product.name }}">
+            <div class="cart-item-info">
+              <div class="cat-tag">{{ item.product.category.name }}</div>
+              <h4><a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a></h4>
+              <div style="font-size:0.85rem;color:#64748b;">₹{{ item.price|floatformat:0 }} each</div>
+              <form action="{% url 'store:cart_remove' item.product.id %}" method="post" style="margin-top:6px;">
+                {% csrf_token %}
+                <button type="submit" class="remove-link" style="background:none;border:none;padding:0;">Remove</button>
+              </form>
+            </div>
+
+            <div class="cart-item-controls">
+              <form action="{% url 'store:cart_update' item.product.id %}" method="post" class="cart-qty-form">
+                {% csrf_token %}
+                <div class="qty-selector">
+                  <button type="button" class="qty-decrease">−</button>
+                  <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+                  <button type="button" class="qty-increase">+</button>
+                </div>
+              </form>
+              <div class="cart-item-total">₹{{ item.total_price|floatformat:0 }}</div>
+            </div>
+          </div>
+        {% endfor %}
+
+        <a href="{% url 'store:product_list' %}" class="btn btn-outline btn-sm" style="margin-top:10px;">← Continue Shopping</a>
+      </div>
+
+      <div class="order-summary">
+        <h3>Order Summary</h3>
+        <div class="summary-row">
+          <span>Subtotal ({{ cart|length }} item{{ cart|length|pluralize }})</span>
+          <span>₹{{ cart.get_total_price|floatformat:0 }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span style="color:#16a34a;font-weight:600;">Free</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span>₹{{ cart.get_total_price|floatformat:0 }}</span>
+        </div>
+        <a href="{% url 'store:checkout' %}" class="btn btn-primary btn-block" style="margin-top:8px;">Proceed to Checkout</a>
+      </div>
+    </div>
+  {% else %}
+    <div class="empty-state" style="padding-bottom:80px;">
+      <h3>Your cart is empty</h3>
+      <p>Browse our catalog or ask the AI assistant to help you find something.</p>
+      <a href="{% url 'store:product_list' %}" class="btn btn-primary">Start Shopping</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

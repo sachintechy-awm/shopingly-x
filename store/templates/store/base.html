@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}ShopinglyX — Shop Smarter{% endblock %}</title>
+<meta name="description" content="ShopinglyX — an AI-powered ecommerce platform with electronics, fashion, home, beauty, and more.">
+<link rel="stylesheet" href="{% static 'store/css/style.css' %}">
+{% block extra_head %}{% endblock %}
+</head>
+<body>
+
+{% include 'store/partials/header.html' %}
+
+<main>
+  {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <div class="toast {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% block content %}{% endblock %}
+</main>
+
+{% include 'store/partials/footer.html' %}
+{% include 'store/partials/ai_modal.html' %}
+
+<button class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script src="{% static 'store/js/main.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>
